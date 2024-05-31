@@ -3,17 +3,17 @@ provider "google" {
     region                          = "us-central1"     
 }
 
-resource "google_compute_network" "peering_network" {
-    name                            = "peering-network"
-    auto_create_subnetworks         = false 
-}
-
 resource "google_compute_subnetwork" "peering_subnet" {
     name                            = "peering-subnet"
     ip_cidr_range                   = "10.10.0.0/24"
     network                         = google_compute_network.peering_network.id
     private_ip_google_access        = true
     region                          = "us-central1" 
+}
+
+resource "google_compute_network" "peering_network" {
+    name                            = "peering-network"
+    auto_create_subnetworks         = false 
 }
 
 resource "google_compute_global_address" "private_ip_address" {
