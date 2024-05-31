@@ -30,7 +30,7 @@ resource "google_service_networking_connection" "peering_connection" {
     service                         = "servicenetworking.googleapis.com"
     reserved_peering_ranges         = [google_compute_global_address.private_ip_address.name]
 }
-
+/**
 resource "google_sql_database_instance" "db_instance" {
     name                            = "db-instance"
     region                          = "us-central1"
@@ -47,4 +47,4 @@ resource "google_sql_database_instance" "db_instance" {
     }
 
     deletion_protection             = false 
-}
+}**/
