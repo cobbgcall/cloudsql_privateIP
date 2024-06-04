@@ -41,7 +41,7 @@ resource "google_sql_database_instance" "db_instance" {
     region                          = "us-central1"
     database_version                = "POSTGRES_14"
 
-    depends_on                      = [google_service_networking_connection.peering_connection]
+    //depends_on                      = [google_service_networking_connection.peering_connection]
 
     settings {
         tier                        = "db-f1-micro"
