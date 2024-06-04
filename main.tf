@@ -18,13 +18,10 @@ resource "google_compute_network" "peering_network" {
 
 resource "google_compute_address" "private_ip_address" {
     name                            = "private-ip-address"
-    purpose                         = "VPC_PEERING"
+    region                          = "us-cenrtal1"
     address_type                    = "INTERNAL"
-    //prefix_length                   = 24
-    //network                         = google_compute_network.peering_network.id
-    subnetwork                      = google_compute_subnetwork.peering_subnet.id
+    subnetwork                      = google_compute_subnetwork.peering_subnet.self_link[0]
     address                         = "10.10.0.24"
-    region                          = "us-central1"
 
     depends_on = [ google_sql_database_instance.db_instance ]
 }
