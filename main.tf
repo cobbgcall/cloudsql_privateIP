@@ -28,7 +28,7 @@ resource "google_compute_address" "private_ip_address" {
 resource "google_service_networking_connection" "peering_connection" {
     network                         = google_compute_network.peering_network.id
     service                         = "servicenetworking.googleapis.com"
-    reserved_peering_ranges         = [google_compute_global_address.private_ip_address.name]
+    reserved_peering_ranges         = [google_compute_address.private_ip_address.name]
 }
 /**
 resource "google_sql_database_instance" "db_instance" {
