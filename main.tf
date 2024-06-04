@@ -27,12 +27,13 @@ resource "google_compute_address" "private_ip_address" {
     region                          = "us-central1"
 }
 
+/**
 resource "google_service_networking_connection" "peering_connection" {
     network                         = google_compute_network.peering_network.id
     service                         = "servicenetworking.googleapis.com"
     reserved_peering_ranges         = [google_compute_address.private_ip_address.name]
 }
-/**
+**/
 resource "google_sql_database_instance" "db_instance" {
     name                            = "db-instance"
     region                          = "us-central1"
@@ -49,4 +50,13 @@ resource "google_sql_database_instance" "db_instance" {
     }
 
     deletion_protection             = false 
-}**/
+}
+
+resource "google_compute_forwarding_rule" "vms_cloudsql" {
+    name                            = "psc-forwarding-rule-cloudsql"
+    region                          = "us-central1"
+    network                         = "peering-network"
+    ip_address                      = google_compute_address.private_ip_address.self_link
+    load_balancing_scheme           = ""
+    target                          = google_sql_database_instance.db_instance.psc_service_attachment_link
+}
