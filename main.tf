@@ -25,6 +25,8 @@ resource "google_compute_address" "private_ip_address" {
     subnetwork                      = google_compute_subnetwork.peering_subnet.id
     address                         = "10.10.0.24"
     region                          = "us-central1"
+
+    depends_on = [ google_sql_database_instance.db_instance ]
 }
 
 /**
@@ -59,4 +61,6 @@ resource "google_compute_forwarding_rule" "vms_cloudsql" {
     ip_address                      = google_compute_address.private_ip_address.self_link
     load_balancing_scheme           = ""
     target                          = google_sql_database_instance.db_instance.psc_service_attachment_link
+
+    depends_on = [ google_compute_address.private_ip_address ]
 }
