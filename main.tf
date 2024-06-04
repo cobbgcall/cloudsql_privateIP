@@ -18,7 +18,7 @@ resource "google_compute_network" "peering_network" {
 
 resource "google_compute_address" "private_ip_address" {
     name                            = "private-ip-address"
-    region                          = "us-cenrtal1"
+    region                          = "us-central1"
     address_type                    = "INTERNAL"
     subnetwork                      = google_compute_subnetwork.peering_subnet.self_link
     address                         = "10.10.0.24"
