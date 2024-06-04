@@ -20,7 +20,7 @@ resource "google_compute_address" "private_ip_address" {
     name                            = "private-ip-address"
     //purpose                         = "VPC_PEERING"
     address_type                    = "INTERNAL"
-    prefix_length                   = 24
+    //prefix_length                   = 24
     network                         = google_compute_network.peering_network.id
     address                         = "10.10.0.24"
 }
