@@ -20,7 +20,7 @@ resource "google_compute_address" "private_ip_address" {
     name                            = "private-ip-address"
     region                          = "us-cenrtal1"
     address_type                    = "INTERNAL"
-    subnetwork                      = google_compute_subnetwork.peering_subnet.self_link[0]
+    subnetwork                      = google_compute_subnetwork.peering_subnet.self_link
     address                         = "10.10.0.24"
 
     depends_on = [ google_sql_database_instance.db_instance ]
