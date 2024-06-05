@@ -39,12 +39,8 @@ resource "google_sql_database_instance" "db_instance" {
         tier                        = "db-f1-micro"
         availability_type           = "REGIONAL"
         ip_configuration {
-          ipv4_enabled              = false
-          private_network           = google_service_networking_connection.private_vpc_connection.network
-          /**psc_config {
-            psc_enabled             = true
-            allowed_consumer_projects = []
-          }**/     
+            ipv4_enabled              = false
+            private_network           = google_service_networking_connection.private_vpc_connection.network     
         }   
     }
 
