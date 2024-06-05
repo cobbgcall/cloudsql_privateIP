@@ -19,11 +19,15 @@ resource "google_compute_network" "peering_network" {
 resource "google_compute_address" "private_ip_address" {
     name                            = "private-ip-address"
     region                          = "us-central1"
-    address_type                    = "INTERNAL"
-    subnetwork                      = google_compute_subnetwork.peering_subnet.self_link
-    address                         = "10.10.0.24"
+    //address_type                    = "INTERNAL"
+    //subnetwork                      = google_compute_subnetwork.peering_subnet.self_link
+    //address                         = "10.10.0.24"
+}
 
-    depends_on = [ google_sql_database_instance.db_instance ]
+resource "google_service_networking_connection" "private_vpc_connection" {
+    network                         = "peering-network"
+    service                         = "servicenetworking.googleapis.com"
+    reserved_peering_ranges         = [google_compute_address.private_ip_address.name] 
 }
 
 resource "google_sql_database_instance" "db_instance" {
@@ -36,11 +40,11 @@ resource "google_sql_database_instance" "db_instance" {
         availability_type           = "REGIONAL"
         ip_configuration {
           ipv4_enabled              = false
-          //private_network           = google_compute_network.peering_network.id
-          psc_config {
+          private_network           = google_service_networking_connection.private_vpc_connection.network
+          /**psc_config {
             psc_enabled             = true
             allowed_consumer_projects = []
-          }     
+          }**/     
         }   
     }
 
