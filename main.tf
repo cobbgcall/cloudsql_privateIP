@@ -25,7 +25,7 @@ resource "google_compute_address" "private_ip_address" {
 }
 
 resource "google_service_networking_connection" "private_vpc_connection" {
-    network                         = "peering-network"
+    network                         = google_compute_network.peering_network.id
     service                         = "servicenetworking.googleapis.com"
     reserved_peering_ranges         = [google_compute_address.private_ip_address.name] 
 }
