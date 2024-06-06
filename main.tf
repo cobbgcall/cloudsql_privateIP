@@ -19,9 +19,9 @@ resource "google_compute_network" "peering_network" {
 resource "google_compute_address" "private_ip_address" {
     name                            = "private-ip-address"
     region                          = "us-central1"
-    //address_type                    = "INTERNAL"
-    //subnetwork                      = google_compute_subnetwork.peering_subnet.self_link
-    //address                         = "10.10.0.24"
+    address_type                    = "INTERNAL"
+    subnetwork                      = google_compute_subnetwork.peering_subnet.self_link
+    address                         = "10.10.0.24"
 }
 
 resource "google_service_networking_connection" "private_vpc_connection" {
@@ -34,6 +34,8 @@ resource "google_sql_database_instance" "db_instance" {
     name                            = "db-instance"
     region                          = "us-central1"
     database_version                = "POSTGRES_14"
+
+    depends_on = [ google_compute_address.private_ip_address ]
 
     settings {
         tier                        = "db-f1-micro"
