@@ -20,14 +20,20 @@ resource "google_compute_address" "private_ip_address" {
     name                            = "private-ip-address"
     region                          = "us-central1"
     address_type                    = "INTERNAL"
-    subnetwork                      = google_compute_subnetwork.peering_subnet.self_link
+    subnetwork                      = google_compute_subnetwork.peering_subnet.name
     address                         = "10.10.0.24"
+
+    depends_on                      = [ google_sql_database_instance.db_instance ]
 }
 
-resource "google_service_networking_connection" "private_vpc_connection" {
-    network                         = google_compute_network.peering_network.id
-    service                         = "servicenetworking.googleapis.com"
-    reserved_peering_ranges         = [google_compute_address.private_ip_address.name] 
+resource "google_compute_forwarding_rule" "psc_forwarding_rule" {
+    name                            = "psc-forwarding-rule"
+    region                          = "us-central1"
+    network                         = google_compute_network.peering_network.name
+    ip_address                      = google_compute_address.private_ip_address.self_link
+    target                          = google_sql_database_instance.db_instance.psc_service_attachment_link 
+
+    depends_on                      = [ google_compute_address.private_ip_address ]
 }
 
 resource "google_sql_database_instance" "db_instance" {
@@ -35,27 +41,17 @@ resource "google_sql_database_instance" "db_instance" {
     region                          = "us-central1"
     database_version                = "POSTGRES_14"
 
-    depends_on = [ google_compute_address.private_ip_address ]
-
     settings {
         tier                        = "db-f1-micro"
         availability_type           = "REGIONAL"
         ip_configuration {
             ipv4_enabled              = false
-            private_network           = google_service_networking_connection.private_vpc_connection.network     
+            psc_config {
+              psc_enabled             = true
+              allowed_consumer_projects = []
+            }       
         }   
     }
 
     deletion_protection             = false 
-}
-
-resource "google_compute_forwarding_rule" "vms_cloudsql" {
-    name                            = "psc-forwarding-rule-cloudsql"
-    region                          = "us-central1"
-    network                         = "peering-network"
-    ip_address                      = google_compute_address.private_ip_address.self_link
-    load_balancing_scheme           = ""
-    target                          = google_sql_database_instance.db_instance.psc_service_attachment_link
-
-    depends_on = [ google_compute_address.private_ip_address ]
 }
