@@ -18,7 +18,7 @@ resource "google_compute_subnetwork" "peering_subnet" {
 
 resource "google_compute_address" "private_ip_address" {
     name                            = "private-ip-address"
-    purpose                         = "VPC_PEERING"
+    purpose                         = "GCE_ENDPOINT"
     address_type                    = "INTERNAL"
     prefix_length                   = 16
     network                         = google_compute_network.peering_network.id 
