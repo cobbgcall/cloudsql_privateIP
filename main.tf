@@ -20,7 +20,7 @@ resource "google_compute_address" "private_ip_address" {
     name                            = "private-ip-address"
     purpose                         = "GCE_ENDPOINT"
     address_type                    = "INTERNAL"
-    network                         = google_compute_network.peering_network.name
+    //network                         = google_compute_network.peering_network.name
 }
 
 resource "google_service_networking_connection" "snc_private_ip" {
