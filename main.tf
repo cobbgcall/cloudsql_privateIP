@@ -21,6 +21,7 @@ resource "google_compute_address" "private_ip_address" {
     purpose                         = "GCE_ENDPOINT"
     address_type                    = "INTERNAL"
     network                         = google_compute_network.peering_network.id 
+    subnetwork                      = google_compute_subnetwork.peering_subnet.id 
 }
 
 resource "google_service_networking_connection" "snc_private_ip" {
