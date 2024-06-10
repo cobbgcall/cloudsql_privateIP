@@ -20,13 +20,16 @@ resource "google_compute_address" "private_ip_address" {
     name                            = "private-ip-address"
     purpose                         = "GCE_ENDPOINT"
     address_type                    = "INTERNAL"
-    //network                         = google_compute_network.peering_network.name
+    address                         = "10.10.0.24"
+    network                         = google_compute_network.peering_network.id
 }
 
 resource "google_service_networking_connection" "snc_private_ip" {
     network                         = google_compute_network.peering_network.id
     service                         = "servicenetworking.googleapis.com"
     reserved_peering_ranges         = [google_compute_address.private_ip_address.name]
+
+    depends_on = [ google_compute_address.private_ip_address ]
 }
 
 resource "google_sql_database_instance" "db_instance" {
@@ -42,6 +45,8 @@ resource "google_sql_database_instance" "db_instance" {
             private_network         = google_compute_network.peering_network.id    
         }   
     }
+
+    depends_on = [ google_service_networking_connection.snc_private_ip ]
 
     deletion_protection             = false 
 }
