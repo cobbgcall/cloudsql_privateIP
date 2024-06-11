@@ -78,7 +78,7 @@ resource "google_compute_firewall" "peering_fw" {
         protocol = "TCP"
         ports = ["22"] 
         }
-    source_ranges                   = ["47.63.171.210/32", "0.0.0.0/0"]
+    source_ranges                   = ["0.0.0.0/0"]
     target_tags                     = ["peering-fw"]
 }
 
