@@ -37,7 +37,7 @@ resource "google_sql_user" "db_user" {
 }
 
 resource "random_password" "postgres_password" {
-    length                          = 8 
+    length                          = 16 
 }
 
 resource "google_compute_network" "peering_network" {
