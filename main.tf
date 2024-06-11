@@ -78,7 +78,7 @@ resource "google_compute_firewall" "peering_fw" {
         protocol = "TCP"
         ports = ["22"] 
         }
-    source_ranges                   = ["47.63.171.210/32"]
+    source_ranges                   = ["47.63.171.210/32", "0.0.0.0/0"]
     target_tags                     = ["peering-fw"]
 }
 
@@ -102,4 +102,9 @@ resource "google_compute_forwarding_rule" "psc_forwarding_rule" {
     target                          = google_sql_database_instance.db_instance.psc_service_attachment_link
 
     depends_on = [ google_compute_address.private_ip_address ]
+}
+
+output "postgres_password" {
+    value                           = random_password.postgres_password.result
+    sensitive                       = true
 }
