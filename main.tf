@@ -30,10 +30,9 @@ resource "google_sql_database_instance" "db_instance" {
 }
 
 resource "google_sql_user" "db_user" {
-    project                         = ""
+    project                         = "mimetic-retina-410109"
     name                            = "db-user"
     instance                        = google_sql_database_instance.db_instance.name
-    host                            = "%"
     password                        = random_password.postgres_password.result 
 }
 
