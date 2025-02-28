@@ -3,9 +3,25 @@ resource "google_compute_network" "peering_network" {
     auto_create_subnetworks = false
 }
 
-resource "google_compute_subnetwork" "peering_subnet" {
-    name                     = "peering-subnet"
-    ip_cidr_range            = "10.10.0.0/24"
+resource "google_compute_subnetwork" "peering_subnet_1" {
+    name                     = "peering-subnet-1"
+    ip_cidr_range            = var.peering_subnet_cidr_1
+    network                  = google_compute_network.peering_network.id
+    private_ip_google_access = true
+    region                   = var.region
+}
+
+resource "google_compute_subnetwork" "peering_subnet_2" {
+    name                     = "peering-subnet-2"
+    ip_cidr_range            = var.peering_subnet_cidr_2
+    network                  = google_compute_network.peering_network.id
+    private_ip_google_access = true
+    region                   = var.region
+}
+
+resource "google_compute_subnetwork" "peering_subnet_3" {
+    name                     = "peering-subnet-3"
+    ip_cidr_range            = var.peering_subnet_cidr_3
     network                  = google_compute_network.peering_network.id
     private_ip_google_access = true
     region                   = var.region
@@ -36,15 +52,15 @@ resource "google_compute_firewall" "peering_fw" {
         protocol = "TCP"
         ports    = ["22"]
     }
-    source_ranges = ["0.0.0.0/0"]
+    source_ranges = var.source_ranges
     target_tags   = ["peering-fw"]
 }
 
 resource "google_compute_address" "private_ip_address" {
     name        = "private-ip-address"
-    subnetwork  = google_compute_subnetwork.peering_subnet.id
+    subnetwork  = google_compute_subnetwork.peering_subnet_1.id
     address_type = "INTERNAL"
-    address     = "10.10.0.24"
+    address     = var.private_ip_address
     region      = var.region
 
     depends_on = [google_sql_database_instance.db_instance]

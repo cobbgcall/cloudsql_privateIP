@@ -7,6 +7,11 @@ module "network" {
     source = "./modules/network"
     project = var.project
     region  = var.region
+    peering_subnet_cidr_1 = var.peering_subnet_cidr_1
+    peering_subnet_cidr_2 = var.peering_subnet_cidr_2
+    peering_subnet_cidr_3 = var.peering_subnet_cidr_3
+    private_ip_address  = var.private_ip_address
+    source_ranges       = var.source_ranges
 }
 
 module "sql_instance" {
