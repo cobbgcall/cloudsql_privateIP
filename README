@@ -1,0 +1,14 @@
+# Cloud SQL with Private IP and VPC Peering
+
+This Terraform configuration sets up a Google Cloud SQL instance with a private IP address, utilizing VPC peering for secure and efficient network communication. The lab demonstrates best practices for managing infrastructure as code, including modularization, variable usage, and output management.
+
+## Components
+
+- **VPC Network**: A custom VPC network with three subnets in the same region.
+- **Subnets**: Three subnets with configurable CIDR ranges.
+- **Cloud SQL Instance**: A PostgreSQL instance with a private IP address.
+- **VPC Peering**: Configured to allow private communication between the VPC and the Cloud SQL instance.
+- **Firewall Rules**: Ingress rules to allow specific traffic.
+- **NAT Router**: Configured for outbound internet access from the private subnets.
+- **Private IP Address**: Assigned to the Cloud SQL instance for internal communication.
+
